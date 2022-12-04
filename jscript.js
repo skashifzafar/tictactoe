@@ -37,9 +37,11 @@ function gameboard(){
                 }
             }
         if(row_set){
+            console.log('Done ', row)
             return row
         }
         if(col_set){
+            console.log('Done ', col)
             return col
         }   
         }
@@ -55,6 +57,14 @@ function gameboard(){
     }
     return{turn}
 }
+const buttonPressed = e => {
+    console.log(e.target.id);  // Get ID of Clicked Element
+    var id_ref=e.target.id;
+    var id_ref1=id_ref.split('');
+    console.log(id_ref,id_ref1);
+    const p1=document.getElementById('sym');
+    board1.turn(p1.value,id_ref1[0],id_ref1[1]);
+    }
 //Instantiate the game
 const board1=gameboard()
 //Create header
@@ -100,15 +110,6 @@ for(var i=0;i<3;i++){
     board_div.appendChild(row)
 }
 game.appendChild(board_div)
-const buttonPressed = e => {
-    console.log(e.target.className);  // Get ID of Clicked Element
-    var class_ref=e.target.className;
-    var class_ref1=class_ref.split(' ');
-    console.log(class_ref,class_ref1);
-    var class_ref2=class_ref1[3].split('');
-    const p1=document.getElementById('sym');
-    board1.turn(p1.value,class_ref2[0],class_ref2[1]);
-    }
 ref_cell=document.querySelectorAll('.cell')
 const len=ref_cell.length
 console.log(len)
