@@ -63,7 +63,19 @@ const buttonPressed = e => {
     var id_ref1=id_ref.split('');
     console.log(id_ref,id_ref1);
     const p1=document.getElementById('sym');
-    board1.turn(p1.value,id_ref1[0],id_ref1[1]);
+    const p1_div=document.querySelector('#p1')
+    const p2_div=document.querySelector('#p2')
+    p1_div.innerHTML='Symbol for Player 1: '+p1.value;
+    if(p1.value=='X'){
+        p2_div.innerHTML='Symbol for Player 2: '+'O';
+    }
+    else{
+        p2_div.innerHTML='Symbol for Player 2: '+'X'
+    }
+    var ret_game=board1.turn(p1.value,id_ref1[0],id_ref1[1]);
+    if (ret_game!=''){
+        console.log('Game is won by: '+ret_game)
+    }
     }
 //Instantiate the game
 const board1=gameboard()
@@ -89,6 +101,15 @@ sel_sym.appendChild(sym_o)
 sym_div.appendChild(sym)
 sym_div.appendChild(sel_sym)
 head_div.appendChild(sym_div)
+const plr_div=document.createElement('div')
+plr_div.classList='player'
+const p1_div=document.createElement('div')
+p1_div.id='p1'
+const p2_div=document.createElement('div')
+p2_div.id='p2'
+plr_div.appendChild(p1_div)
+plr_div.appendChild(p2_div)
+head_div.appendChild(plr_div)
 //Create Board
 const game=document.querySelector('.game')
 const board_div=document.createElement('div')
