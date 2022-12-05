@@ -1,12 +1,43 @@
 function gameboard(){
-    var board=[['','',''],['','',''],['','','']]
+    
+    const reset=()=>{
+        board=[['','',''],['','',''],['','','']]
+        start=false
+        val=''
+        make_board()
+        const win=document.querySelector('#win_dec')
+        win.innerHTML=''
+    }
     const turn=(ident,x,y)=>{
+        if(start==false){
+            val=ident
+            start=true
+            const turn=document.getElementById('sym').value;
+            const p1_div=document.querySelector('#p1')
+            const p2_div=document.querySelector('#p2')
+            p1_div.innerHTML='Symbol for Player 1: '+p1.value;
+            if(turn=='p1'){
+                p1_div.innerHTML='Symbol for Player 1: X';
+                p2_div.innerHTML='Symbol for Player 2: O';
+            }
+            else{
+                p1_div.innerHTML='Symbol for Player 1: O';
+                p2_div.innerHTML='Symbol for Player 2: X';
+            }
+        }
         console.log(x,y)
         if (board[x][y] ==''){
-            board[x][y]=ident
+            board[x][y]=val
+            if (val=='X'){
+                val='O'
+            }
+            else{
+                val='X'
+            }
         }
         else{
             console.log('Invalid')
+            return false
         }
         console.log(board)
         make_board()
@@ -45,7 +76,7 @@ function gameboard(){
             return col
         }   
         }
-        return ''
+        return true
     }
     const make_board=()=>{
         for(var i=0;i<3;i++){
@@ -55,25 +86,44 @@ function gameboard(){
             }
         }
     }
-    return{turn}
+    var board =[['','',''],['','',''],['','','']]
+    var start=false
+    var val=''
+    return{turn,reset}
 }
 const buttonPressed = e => {
     console.log(e.target.id);  // Get ID of Clicked Element
     var id_ref=e.target.id;
     var id_ref1=id_ref.split('');
     console.log(id_ref,id_ref1);
-    const p1=document.getElementById('sym');
-    const p1_div=document.querySelector('#p1')
-    const p2_div=document.querySelector('#p2')
-    p1_div.innerHTML='Symbol for Player 1: '+p1.value;
-    if(p1.value=='X'){
-        p2_div.innerHTML='Symbol for Player 2: '+'O';
+    const turn=document.getElementById('sym').value;
+    const ply=document.getElementById('ply').value;
+    var sym=''
+    if(turn=='p1'){
+        if (ply=='p1'){
+            sym='X'
+        }
+        else{
+            sym='O'
+        }
     }
     else{
-        p2_div.innerHTML='Symbol for Player 2: '+'X'
+        if (ply=='p1'){
+            sym='O'
+        }
+        else{
+            sym='X'
+        }
     }
-    var ret_game=board1.turn(p1.value,id_ref1[0],id_ref1[1]);
-    if (ret_game!=''){
+    console.log(sym,turn,ply)
+    var ret_game=board1.turn(sym,id_ref1[0],id_ref1[1]);
+    if (ret_game==false){
+        return
+    }
+    
+    if (ret_game=='X'||ret_game=='O'){
+        const win=document.querySelector('#win_dec')
+        win.innerHTML='Game is won by: '+ret_game
         console.log('Game is won by: '+ret_game)
     }
     }
@@ -82,25 +132,48 @@ const board1=gameboard()
 //Create header
 
 const head_div=document.querySelector('.header')
+const sel_div=document.createElement('div')
+sel_div.id='sel_div'
 const sym_div=document.createElement('label')
 sym_div.classList='sym_div'
 const sym=document.createElement('label')
 sym.for='sym';
-sym.innerHTML='Choose a symbol for player 1:'
+sym.innerHTML='X:'
 const sel_sym=document.createElement('select')
 sel_sym.name='sym'
 sel_sym.id='sym'
 const sym_x=document.createElement('option')
-sym_x.value='X'
-sym_x.innerHTML='X'
+sym_x.value='p1'
+sym_x.innerHTML='Player 1'
 const sym_o=document.createElement('option')
-sym_o.value='O'
-sym_o.innerHTML='O'
+sym_o.value='p2'
+sym_o.innerHTML='Player 2'
 sel_sym.appendChild(sym_x)
 sel_sym.appendChild(sym_o)
 sym_div.appendChild(sym)
 sym_div.appendChild(sel_sym)
-head_div.appendChild(sym_div)
+sel_div.appendChild(sym_div)
+
+const ply_div=document.createElement('label')
+ply_div.classList='ply_div'
+const ply=document.createElement('label')
+ply.for='ply';
+ply.innerHTML='First turn:'
+const sel_ply=document.createElement('select')
+sel_ply.name='ply'
+sel_ply.id='ply'
+const ply_1=document.createElement('option')
+ply_1.value='p1'
+ply_1.innerHTML='Player 1'
+const ply_2=document.createElement('option')
+ply_2.value='p2'
+ply_2.innerHTML='Player 2'
+sel_ply.appendChild(ply_1)
+sel_ply.appendChild(ply_2)
+ply_div.appendChild(ply)
+ply_div.appendChild(sel_ply)
+sel_div.appendChild(ply_div)
+head_div.appendChild(sel_div)
 const plr_div=document.createElement('div')
 plr_div.classList='player'
 const p1_div=document.createElement('div')
@@ -138,4 +211,15 @@ for(var i=0;i<len;i++){
     ref_cell[i].addEventListener("click", buttonPressed)
     //ref_cell.addEventListener('click', function(){board1.turn('X',i,j)})
     }
+
+const foot=document.querySelector('.foot')
+const win_dec=document.createElement('div')
+win_dec.id='win_dec'
+foot.appendChild(win_dec)
+const reset=document.createElement('button')
+reset.id='rst'
+reset.innerHTML='Reset'
+foot.appendChild(reset)
+reset.addEventListener('click',function(){board1.reset()})
+
 

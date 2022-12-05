@@ -23,12 +23,12 @@ body{
 }
 .game{
     background-color: antiquewhite;
-    height: 75%;
+    height: 70%;
 }
 
 .foot{
     background-color: blueviolet;
-    height: 10%;
+    height: 15%;
 }
 .board{
     height:90%;
@@ -101,6 +101,25 @@ select{
     font-size: 3vh;
 }
 .player{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+#rst{
+    font-size: 2vh;
+    border-radius: 10px;
+}
+.foot{
+    display: flex;
+    flex-direction: column;
+    align-items:center ;
+    justify-content: space-around;
+}
+#win_dec{
+    font-size: 4vh;
+}
+#sel_div{
+    margin-top: 1%;
     width: 100%;
     display: flex;
     justify-content: space-around;
