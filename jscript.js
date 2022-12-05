@@ -17,10 +17,12 @@ function gameboard(){
             const p2_div=document.querySelector('#p2')
             p1_div.innerHTML='Symbol for Player 1: '+p1.value;
             if(turn=='p1'){
+                p_val=['X','O']
                 p1_div.innerHTML='Symbol for Player 1: X';
                 p2_div.innerHTML='Symbol for Player 2: O';
             }
             else{
+                p_val=['O','X']
                 p1_div.innerHTML='Symbol for Player 1: O';
                 p2_div.innerHTML='Symbol for Player 2: X';
             }
@@ -41,7 +43,16 @@ function gameboard(){
         }
         console.log(board)
         make_board()
-        return board_check()
+        var check=board_check()
+        if(check==p_val[0]){
+            return 'P1'
+        }
+        else if(check==p_val[1]){
+            return 'P2'
+        }
+        else{
+            return
+        }
     }
     const board_check=()=>{
         for (var i=0;i<3;i++){
@@ -76,7 +87,7 @@ function gameboard(){
             return col
         }   
         }
-        return true
+        return
     }
     const make_board=()=>{
         for(var i=0;i<3;i++){
@@ -88,10 +99,13 @@ function gameboard(){
     }
     var board =[['','',''],['','',''],['','','']]
     var start=false
-    var val=''
-    return{turn,reset}
+    var p_val=['','']
+    return{turn,reset,board_check}
 }
 const buttonPressed = e => {
+    if (board1.board_check()=='X'||board1.board_check()=='O' ){
+        return
+    }
     console.log(e.target.id);  // Get ID of Clicked Element
     var id_ref=e.target.id;
     var id_ref1=id_ref.split('');
@@ -121,7 +135,7 @@ const buttonPressed = e => {
         return
     }
     
-    if (ret_game=='X'||ret_game=='O'){
+    if (ret_game=='P1'||ret_game=='P2'){
         const win=document.querySelector('#win_dec')
         win.innerHTML='Game is won by: '+ret_game
         console.log('Game is won by: '+ret_game)
